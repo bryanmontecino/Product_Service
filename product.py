@@ -58,5 +58,5 @@ def add_product():
     }), 201
 
 if __name__ == '__main__':
-    #db.create_all()
-    app.run(host='127.0.0.1', port=5000)
+    # db.create_all()
+    app.run(host='0.0.0.0', port=80)  # Use host '0.0.0.0' and port 80 for Render

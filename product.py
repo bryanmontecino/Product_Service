@@ -1,10 +1,24 @@
+"""
+Author: Bryan Montecino
+File: product.py
+Date: September 24, 2023
+Assignment: REST APIs
+Objective: 
+The objective of this assignment is to create a microservices application for grocery shopping.
+Developed two Flask microservices, ”Product Service” and ”Cart Service,” with specific endpoints.
+Deployed both services on the Render platform. 
+Benefits:
+This assignment helped me gain practical experience in microservices architecture, API development with Flask, and cloud deployment
+"""
+
+
 from flask import Flask, jsonify, request
 from flask_sqlalchemy import SQLAlchemy
 
 app = Flask(__name__)
 
 # Configuration for SQLite database
-app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///kachowproducts.db'  # SQLite database file name
+app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///kachowproducts.db'
 db = SQLAlchemy(app)
 
 # Define a Product model
@@ -14,6 +28,7 @@ class Product(db.Model):
     price = db.Column(db.Float, nullable=False)
     quantity = db.Column(db.Integer, nullable=False)
 
+# Endpoint to retrive available products from Product Service
 @app.route('/products', methods=['GET'])
 def get_products():
     products = Product.query.all()
@@ -27,6 +42,7 @@ def get_products():
         })
     return jsonify(product_list)
 
+# Endpoint to pull a unique product from the database
 @app.route('/products/<int:product_id>', methods=['GET'])
 def get_product(product_id):
     product = Product.query.get(product_id)
@@ -40,6 +56,7 @@ def get_product(product_id):
         return jsonify(product_data)
     return jsonify({'message': 'Product not found'}), 404
 
+# Endpoint to add a product, utilizing the product's name, price and quantity
 @app.route('/products', methods=['POST'])
 def add_product():
     data = request.get_json()
